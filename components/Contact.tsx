@@ -1,6 +1,10 @@
 import React, { useState, FormEvent, useEffect, useRef } from 'react';
-import { BUSINESS_INFO } from '../constants';
+import { BUSINESS_INFO, FORM_RECIPIENT_EMAIL } from '../constants';
 import { PhoneIcon, MailIcon, MapPinIcon, ClockIcon } from './Icons';
+
+// Web3Forms API key - Get your free access key at https://web3forms.com/
+// This key is for sending contact form submissions via email
+const WEB3FORMS_ACCESS_KEY = "YOUR_ACCESS_KEY_HERE"; // TODO: Replace with actual access key
 
 type VerificationStep = 'form' | 'verify' | 'success';
 
@@ -73,12 +77,38 @@ const Contact: React.FC = () => {
     return null;
   };
 
-  const generateAndSendCode = () => {
-    // Simulate backend generating and emailing code
+  const generateAndSendCode = async () => {
+    // Generate verification code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    console.log(`[DEV ONLY] Verification Code sent to ${formData.email}: ${code}`);
+    console.log(`[DEV] Generated verification code: ${code}`);
     setGeneratedCode(code);
-    
+
+    // Send verification email via Web3Forms
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          to: formData.email,
+          from_name: "The Pampered Pooch",
+          subject: "Your Verification Code - The Pampered Pooch",
+          message: `Your verification code is: ${code}\n\nThis code will expire in 15 minutes.\n\nIf you didn't request this code, please ignore this email.`,
+          replyto: FORM_RECIPIENT_EMAIL
+        })
+      });
+
+      const result = await response.json();
+      if (!result.success) {
+        console.warn("Web3Forms verification email response:", result);
+      }
+    } catch (error) {
+      console.error("Failed to send verification email:", error);
+    }
+
     // Reset Verification State
     setVerificationCode(new Array(6).fill(''));
     setTimeLeft(900);
@@ -86,7 +116,7 @@ const Contact: React.FC = () => {
     setCodeError('');
     setStep('verify');
     setStatus('idle');
-    
+
     // Focus first input after render
     setTimeout(() => inputRefs.current[0]?.focus(), 100);
   };
@@ -140,7 +170,7 @@ const Contact: React.FC = () => {
     }
   };
 
-  const verifyAndSend = () => {
+  const verifyAndSend = async () => {
     const enteredCode = verificationCode.join('');
     if (enteredCode.length !== 6) return;
 
@@ -151,32 +181,63 @@ const Contact: React.FC = () => {
 
     if (enteredCode === generatedCode) {
       setStatus('submitting');
-      
-      // Simulate final save
-      setTimeout(() => {
-        try {
+
+      try {
+        // Send the actual contact message via Web3Forms
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_ACCESS_KEY,
+            to: FORM_RECIPIENT_EMAIL,
+            from_name: formData.name,
+            subject: `New Contact Form Submission - The Pampered Pooch`,
+            replyto: formData.email,
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            message: formData.message,
+            // Additional metadata
+            form_name: "Contact Form",
+            website: "The Pampered Pooch - Willunga"
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Also save to localStorage as backup
           const existingMessages = JSON.parse(localStorage.getItem('contact_messages') || '[]');
           const newMessage = {
             ...formData,
             id: Date.now(),
             date: new Date().toISOString(),
-            verified: true
+            verified: true,
+            emailSent: true
           };
           localStorage.setItem('contact_messages', JSON.stringify([...existingMessages, newMessage]));
-          
+
           setStep('success');
           setFormData({ name: '', email: '', phone: '', message: '' });
-          
+
           // Reset after animation
           setTimeout(() => {
             setStep('form');
             setStatus('idle');
           }, 4000);
-        } catch (err) {
-          setCodeError('System error. Please try again.');
+        } else {
+          console.error("Web3Forms submission failed:", result);
+          setCodeError('Failed to send message. Please try again or contact us directly.');
           setStatus('idle');
         }
-      }, 1000);
+      } catch (err) {
+        console.error("Form submission error:", err);
+        setCodeError('System error. Please try again.');
+        setStatus('idle');
+      }
     } else {
       setCodeError('Incorrect code. Please try again.');
       setVerificationCode(new Array(6).fill(''));

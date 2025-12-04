@@ -1,6 +1,6 @@
 import React from 'react';
-import { NAV_ITEMS } from '../constants';
-import { PawIcon } from './Icons';
+import { NAV_ITEMS, BUSINESS_INFO } from '../constants';
+import { PawIcon, FacebookIcon, InstagramIcon, PhoneIcon, MailIcon } from './Icons';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -6059,12 +6059,54 @@ const Footer: React.FC = () => {
    id="path1003" />
 </svg>
             </div>
-            <span className="text-2xl font-serif font-bold tracking-tight">The Pampered Pooch</span>
+            <div className="text-center md:text-left">
+              <span className="text-2xl font-serif font-bold tracking-tight block">The Pampered Pooch</span>
+              <p className="text-gray-400 text-sm mt-1 italic">Professional grooming with a personal touch in the heart of Willunga.</p>
+            </div>
           </div>
-          
+
+          {/* Social Media Icons */}
+          <div className="flex items-center gap-4 mb-6 md:mb-0">
+            <a
+              href="https://www.facebook.com/thepamperedpoochwillunga"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:bg-primary hover:text-white transition-all duration-300 hover:-translate-y-1"
+              aria-label="Follow us on Facebook"
+            >
+              <FacebookIcon className="w-5 h-5" />
+            </a>
+            <a
+              href="https://www.instagram.com/thepamperedpoochwillunga"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:bg-primary hover:text-white transition-all duration-300 hover:-translate-y-1"
+              aria-label="Follow us on Instagram"
+            >
+              <InstagramIcon className="w-5 h-5" />
+            </a>
+            <a
+              href={`tel:${BUSINESS_INFO.phone}`}
+              className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:bg-secondary hover:text-white transition-all duration-300 hover:-translate-y-1"
+              aria-label="Call us"
+            >
+              <PhoneIcon className="w-5 h-5" />
+            </a>
+            <a
+              href={`mailto:${BUSINESS_INFO.email}`}
+              className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:bg-secondary hover:text-white transition-all duration-300 hover:-translate-y-1"
+              aria-label="Email us"
+            >
+              <MailIcon className="w-5 h-5" />
+            </a>
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <div className="border-t border-gray-800 pt-8 pb-8">
           <nav className="flex flex-wrap justify-center gap-8">
             {NAV_ITEMS.map((item) => (
-              <a 
+              <a
                 key={item.label}
                 href={item.href}
                 className="text-gray-400 hover:text-primary transition-colors text-sm font-medium uppercase tracking-wider"
@@ -6075,6 +6117,7 @@ const Footer: React.FC = () => {
           </nav>
         </div>
 
+        {/* Bottom Bar */}
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
           <p>&copy; {currentYear} The Pampered Pooch. All rights reserved.</p>
           <div className="flex gap-6 mt-4 md:mt-0">

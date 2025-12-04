@@ -14,6 +14,10 @@ export const BUSINESS_INFO: BusinessInfo = {
   ]
 };
 
+// Email recipient for form submissions (for testing, using different email than displayed)
+// Change this back to christine@thepamperedpooch.com.au for production
+export const FORM_RECIPIENT_EMAIL = "robin@blackcat-it.com.au";
+
 export const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: "#hero" },
   { label: "Services", href: "#services" },
