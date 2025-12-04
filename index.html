@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Pampered Pooch - Professional Dog Grooming | Willunga, SA</title>
+    <meta name="description" content="Expert dog grooming services in Willunga. Professional, gentle care for your beloved pets. Book your appointment today!" />
+    <meta name="keywords" content="dog grooming, Willunga, pet grooming, dog wash, professional grooming, South Australia" />
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="images/logo-favicon.png" />
+    <link rel="apple-touch-icon" href="images/logo-favicon.png" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Rubik:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Rubik"', 'sans-serif'],
+              serif: ['"Lora"', 'serif'],
+            },
+            colors: {
+              // Warm/Gold Base
+              primary: '#d9944a',
+              'primary-hover': '#c97d3d',
+              'primary-light': '#fef4e8',
+              'primary-dark': '#8b5a2b',
+              
+              // Teal/Green Base
+              secondary: '#1b9e7e',
+              'secondary-hover': '#178a6c',
+              'secondary-light': '#e6f7f3',
+              'secondary-dark': '#0f6652',
+              
+              // Accents
+              accent: '#2db894',
+              
+              // Neutrals (Warmer Grays)
+              neutral: '#faf8f6', // gray-50
+              'neutral-100': '#f2ebe5',
+              'neutral-200': '#e8dfd7',
+              dark: '#1a1614', // gray-900
+            },
+            borderRadius: {
+              'xl': '1rem',
+              '2xl': '1.5rem',
+              '3xl': '2rem',
+              '4xl': '2.5rem',
+            },
+            boxShadow: {
+              'soft-sm': '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+              'soft-md': '0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05)',
+              'soft-lg': '0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08)',
+              'soft-xl': '0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.08)',
+              'glow-primary': '0 10px 30px -5px rgba(217, 148, 74, 0.3)',
+              'glow-secondary': '0 10px 30px -5px rgba(27, 158, 126, 0.3)',
+            },
+            animation: {
+              'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+              'float': 'float 6s ease-in-out infinite',
+              'bounce-gentle': 'bounceGentle 2s infinite',
+              'snip': 'snip 0.5s ease-in-out',
+            },
+            keyframes: {
+              fadeInUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              },
+              bounceGentle: {
+                '0%, 100%': { transform: 'translateY(-5%)' },
+                '50%': { transform: 'translateY(0)' },
+              },
+              snip: {
+                '0%, 100%': { transform: 'rotate(0deg)' },
+                '50%': { transform: 'rotate(-15deg)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #faf8f6;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #d9944a;
+        border-radius: 5px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #c97d3d;
+      }
+      
+      body {
+        font-family: 'Rubik', sans-serif;
+      }
+      
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Lora', serif;
+      }
+      
+      .stagger-1 { animation-delay: 100ms; }
+      .stagger-2 { animation-delay: 200ms; }
+      .stagger-3 { animation-delay: 300ms; }
+      .stagger-4 { animation-delay: 400ms; }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "react": "https://aistudiocdn.com/react@^19.2.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/"
+  }
+}
+</script>
+</head>
+  <body class="bg-neutral text-dark antialiased overflow-x-hidden">
+    <div id="root"></div>
+  </body>
+</html>
