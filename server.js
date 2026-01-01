@@ -23,6 +23,9 @@ app.use(express.json());
 // Serve static files from the React app build directory
 app.use(express.static(path.join(__dirname, 'dist')));
 
+// Explicitly bind to 0.0.0.0 for containerized environments (Fly.io)
+const HOST = '0.0.0.0';
+
 // In-memory store for verification codes (use Redis/DB in production)
 const verificationCodes = new Map();
 
@@ -320,9 +323,9 @@ app.get('*', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, HOST, () => {
     console.log(`\n🐾 The Pampered Pooch API Server`);
-    console.log(`   Running on http://localhost:${PORT}`);
+    console.log(`   Running on http://${HOST}:${PORT}`);
     console.log(`   SMTP Host: ${process.env.SMTP_HOST || '(not configured)'}`);
     console.log(`   Google Places: ${process.env.GOOGLE_PLACE_ID ? 'Configured' : 'Not Configured'}\n`);
 });

@@ -19,7 +19,7 @@ COPY --from=builder /app/email-templates ./email-templates
 # reviews-cache.json will be created dynamically or can be mounted
 
 ENV NODE_ENV=production
-ENV PORT=8080
-EXPOSE 8080
+ENV PORT=80
+EXPOSE 80
 
 CMD ["node", "server.js"]
