@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
    id="Layer_1"
    x="0px"
    y="0px"
-   width="100%"
+   width="30%"
    viewBox="0 0 1024 1024"
    enable-background="new 0 0 1024 1024"
    xml:space="preserve"
