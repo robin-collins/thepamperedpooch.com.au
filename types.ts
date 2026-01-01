@@ -10,12 +10,13 @@ export interface Service {
 }
 
 export interface Testimonial {
-  id: number;
+  id: number | string;
   name: string;
   petName: string;
   review: string;
   rating: number;
   image: string;
+  reviewImages?: string[];
 }
 
 export interface NavItem {
@@ -29,6 +30,6 @@ export interface BusinessInfo {
   phone: string;
   phoneDisplay: string;
   fax?: string;
-  email: string;
+  email?: string;
   hours: string[];
 }

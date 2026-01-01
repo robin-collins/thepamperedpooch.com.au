@@ -6,7 +6,6 @@ export const BUSINESS_INFO: BusinessInfo = {
   phone: "0885564155",
   phoneDisplay: "(08) 8556 4155",
   fax: "(08) 8556 2299",
-  email: "christine@thepamperedpooch.com.au",
   hours: [
     "Mon - Fri: 8:30 AM - 5:00 PM",
     "Saturday: 9:00 AM - 2:00 PM",

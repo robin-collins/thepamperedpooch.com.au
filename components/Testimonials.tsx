@@ -5,23 +5,44 @@ import { StarIcon } from './Icons';
 const AUTO_PLAY_INTERVAL = 5000;
 
 const Testimonials: React.FC = () => {
+  const [reviews, setReviews] = useState<any[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const patternRef = useRef<SVGPatternElement>(null);
 
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/api/reviews');
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data) && data.length > 0) {
+            setReviews(data);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch Google Reviews:', error);
+      }
+    };
+
+    fetchReviews();
+  }, []);
+
   const nextSlide = () => {
-    setActiveIndex((prev) => (prev + 1) % TESTIMONIALS.length);
+    if (reviews.length === 0) return;
+    setActiveIndex((prev) => (prev + 1) % reviews.length);
   };
 
   useEffect(() => {
-    if (!isPaused) {
+    if (!isPaused && !selectedImage && reviews.length > 0) {
       timerRef.current = setInterval(nextSlide, AUTO_PLAY_INTERVAL);
     }
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [isPaused]);
+  }, [isPaused, reviews.length, selectedImage]);
 
   // Parallax effect for background pattern
   useEffect(() => {
@@ -47,18 +68,20 @@ const Testimonials: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  if (reviews.length === 0) return null;
+
   return (
     <section id="testimonials" className="py-24 bg-secondary text-white overflow-hidden relative">
       {/* Background Pattern with Parallax */}
       <div className="absolute inset-0 opacity-10 pointer-events-none">
         <svg width="100%" height="100%">
-          <pattern 
+          <pattern
             ref={patternRef}
-            id="paw-pattern" 
-            x="0" 
-            y="0" 
-            width="100" 
-            height="100" 
+            id="paw-pattern"
+            x="0"
+            y="0"
+            width="100"
+            height="100"
             patternUnits="userSpaceOnUse"
           >
             <path d="M20 20 Q 25 10 30 20 T 40 20" stroke="white" fill="none" />
@@ -74,25 +97,25 @@ const Testimonials: React.FC = () => {
           <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">What Our Clients Say</h2>
         </div>
 
-        <div 
+        <div
           className="max-w-4xl mx-auto"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          <div className="relative h-[400px] md:h-[300px]">
-            {TESTIMONIALS.map((testimonial, index) => {
+          <div className="relative min-h-[400px]">
+            {reviews.map((testimonial, index) => {
               const isActive = index === activeIndex;
               // Determine position for transitions
-              let position = 'opacity-0 translate-x-full';
-              if (isActive) position = 'opacity-100 translate-x-0';
-              if (index === (activeIndex - 1 + TESTIMONIALS.length) % TESTIMONIALS.length) position = 'opacity-0 -translate-x-full';
+              let position = 'opacity-0 translate-x-full pointer-events-none absolute top-0 left-0';
+              if (isActive) position = 'opacity-100 translate-x-0 pointer-events-auto relative';
+              if (index === (activeIndex - 1 + reviews.length) % reviews.length) position = 'opacity-0 -translate-x-full pointer-events-none absolute top-0 left-0';
 
               return (
-                <div 
+                <div
                   key={testimonial.id}
-                  className={`absolute top-0 left-0 w-full transition-all duration-700 ease-in-out transform ${position}`}
+                  className={`w-full transition-all duration-700 ease-in-out transform ${position}`}
                 >
-                  <div className="bg-white rounded-3xl p-8 md:p-12 shadow-soft-xl text-dark relative">
+                  <div className="bg-white rounded-3xl p-8 md:p-12 shadow-soft-xl text-dark relative h-full">
                     {/* Decorative Quote Mark */}
                     <div className="absolute -top-6 left-12 bg-primary text-white p-3 rounded-full shadow-lg">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -102,8 +125,8 @@ const Testimonials: React.FC = () => {
 
                     <div className="flex flex-col md:flex-row gap-8 items-center">
                       <div className="w-24 h-24 flex-shrink-0">
-                        <img 
-                          src={testimonial.image} 
+                        <img
+                          src={testimonial.image}
                           alt={testimonial.name}
                           className="w-full h-full rounded-full object-cover border-4 border-neutral-100"
                         />
@@ -117,6 +140,27 @@ const Testimonials: React.FC = () => {
                         <p className="text-xl md:text-2xl font-medium leading-relaxed mb-6 italic text-gray-700">
                           "{testimonial.review}"
                         </p>
+
+                        {/* Review Images */}
+                        {testimonial.reviewImages && testimonial.reviewImages.length > 0 && (
+                          <div className="flex flex-wrap gap-3 mb-8 justify-center md:justify-start">
+                            {testimonial.reviewImages.map((imgUrl, imgIdx) => (
+                              <button
+                                key={imgIdx}
+                                onClick={() => setSelectedImage(imgUrl)}
+                                className="group relative w-28 h-28 md:w-40 md:h-40 rounded-2xl overflow-hidden shadow-soft-md border-2 border-white transition-all duration-300 hover:scale-105 hover:shadow-soft-lg cursor-zoom-in"
+                              >
+                                <img
+                                  src={imgUrl}
+                                  alt={`Review photo ${imgIdx + 1}`}
+                                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                />
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
+                              </button>
+                            ))}
+                          </div>
+                        )}
+
                         <div>
                           <h4 className="font-bold text-lg font-serif">{testimonial.name}</h4>
                           <span className="text-gray-500 text-sm uppercase tracking-wide">Owner of {testimonial.petName}</span>
@@ -130,20 +174,50 @@ const Testimonials: React.FC = () => {
           </div>
 
           {/* Dots Navigation */}
-          <div className="flex justify-center gap-3 mt-8">
-            {TESTIMONIALS.map((_, index) => (
+          <div className="flex justify-center gap-3 mt-12 mb-4">
+            {reviews.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setActiveIndex(index)}
-                className={`h-3 rounded-full transition-all duration-300 ${
-                  index === activeIndex ? 'bg-white w-8' : 'bg-white/30 hover:bg-white/50 w-3'
-                }`}
+                className={`h-3 rounded-full transition-all duration-300 ${index === activeIndex ? 'bg-white w-8' : 'bg-white/30 hover:bg-white/50 w-3'
+                  }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
             ))}
           </div>
         </div>
       </div>
+
+      {/* Image Lightbox Modal */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 md:p-8 animate-in fade-in duration-300"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button
+            className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors p-2 z-10"
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedImage(null);
+            }}
+          >
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <div
+            className="relative max-w-5xl max-h-full w-full h-full flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={selectedImage}
+              alt="Review snapshot"
+              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300"
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 };
