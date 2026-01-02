@@ -15,7 +15,7 @@ const Testimonials: React.FC = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/reviews');
+        const response = await fetch('/api/reviews');
         if (response.ok) {
           const data = await response.json();
           if (Array.isArray(data) && data.length > 0) {

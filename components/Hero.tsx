@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { BUSINESS_INFO } from '../constants';
 import { PawIcon } from './Icons';
+import { smoothScrollTo } from './Navigation';
 
 const Hero: React.FC = () => {
   const [loaded, setLoaded] = useState(false);
@@ -35,7 +35,7 @@ const Hero: React.FC = () => {
         <div className="max-w-xl">
           <div className={`transition-all duration-1000 transform ${loaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
             <span className="inline-block px-4 py-1 bg-primary-light text-primary-dark font-bold rounded-full text-sm mb-6 tracking-wide uppercase border border-primary/20">
-              Willunga's Premier Grooming Salon
+              Adelaide's Premier Grooming Salon,<br />established in 1994 and located in Willunga
             </span>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-dark leading-tight mb-6">
               Pamper Your <br />
@@ -53,12 +53,14 @@ const Hero: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               <a
                 href="#contact"
+                onClick={(e) => { e.preventDefault(); smoothScrollTo('#contact'); }}
                 className="bg-primary hover:bg-primary-hover text-white text-center px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:-translate-y-1 shadow-glow-primary"
               >
                 Contact Christine
               </a>
               <a
                 href="#services"
+                onClick={(e) => { e.preventDefault(); smoothScrollTo('#services'); }}
                 className="bg-white hover:bg-neutral-100 text-dark border-2 border-neutral-200 text-center px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:-translate-y-1 shadow-soft-sm hover:shadow-soft-md"
               >
                 View Services
@@ -80,7 +82,11 @@ const Hero: React.FC = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <a href="#services" className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce-gentle text-dark/30 hover:text-primary transition-colors cursor-pointer">
+      <a
+        href="#services"
+        onClick={(e) => { e.preventDefault(); smoothScrollTo('#services'); }}
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce-gentle text-dark/30 hover:text-primary transition-colors cursor-pointer"
+      >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
         </svg>

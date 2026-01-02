@@ -1,10 +1,11 @@
 import React, { useState, FormEvent, useEffect, useRef } from 'react';
-import { BUSINESS_INFO } from '../constants';
+import { useConfig } from '../ConfigContext';
 import { PhoneIcon, MailIcon, MapPinIcon, ClockIcon } from './Icons';
 
 type VerificationStep = 'form' | 'verify' | 'success';
 
 const Contact: React.FC = () => {
+  const { businessInfo } = useConfig();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -74,7 +75,7 @@ const Contact: React.FC = () => {
 
   const generateAndSendCode = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/send-verification', {
+      const response = await fetch('/api/send-verification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: formData.email, name: formData.name }),
@@ -164,7 +165,7 @@ const Contact: React.FC = () => {
 
     try {
       // Step 1: Verify the code
-      const verifyResponse = await fetch('http://localhost:3001/api/verify-code', {
+      const verifyResponse = await fetch('/api/verify-code', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: formData.email, code: enteredCode }),
@@ -177,7 +178,7 @@ const Contact: React.FC = () => {
       }
 
       // Step 2: Send the actual message
-      const messageResponse = await fetch('http://localhost:3001/api/send-message', {
+      const messageResponse = await fetch('/api/send-message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -244,9 +245,9 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-dark text-lg mb-1">Location</h4>
-                  <p className="text-gray-600 leading-relaxed">{BUSINESS_INFO.address}</p>
-                  {BUSINESS_INFO.postalAddress && (
-                    <p className="text-gray-500 text-sm mt-1">{BUSINESS_INFO.postalAddress}</p>
+                  <p className="text-gray-600 leading-relaxed">{businessInfo.address}</p>
+                  {businessInfo.postalAddress && (
+                    <p className="text-gray-500 text-sm mt-1">{businessInfo.postalAddress}</p>
                   )}
                 </div>
               </div>
@@ -257,11 +258,11 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-dark text-lg mb-1">Phone</h4>
-                  <a href={`tel:${BUSINESS_INFO.phone}`} className="text-gray-600 hover:text-primary transition-colors text-lg font-medium">
-                    {BUSINESS_INFO.phoneDisplay}
+                  <a href={`tel:${businessInfo.phone}`} className="text-gray-600 hover:text-primary transition-colors text-lg font-medium">
+                    {businessInfo.phoneDisplay}
                   </a>
-                  {BUSINESS_INFO.fax && (
-                    <p className="text-gray-400 text-sm mt-1">Fax: {BUSINESS_INFO.fax}</p>
+                  {businessInfo.fax && (
+                    <p className="text-gray-400 text-sm mt-1">Fax: {businessInfo.fax}</p>
                   )}
                 </div>
               </div>
@@ -285,7 +286,7 @@ const Contact: React.FC = () => {
                 <div>
                   <h4 className="font-bold text-dark text-lg mb-1">Opening Hours</h4>
                   <ul className="text-gray-600 space-y-1">
-                    {BUSINESS_INFO.hours.map((hour, idx) => (
+                    {businessInfo.hours.map((hour, idx) => (
                       <li key={idx}>{hour}</li>
                     ))}
                   </ul>

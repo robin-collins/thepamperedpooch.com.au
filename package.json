@@ -8,6 +8,8 @@
     "dev:server": "node server.js",
     "dev:all": "node server.js & vite",
     "build": "vite build",
+    "build:docker": "docker build -t speeddemonau/thepamperedpooch:latest .",
+    "push:docker": "docker push speeddemonau/thepamperedpooch:latest",
     "start": "node server.js",
     "preview": "vite preview"
   },
@@ -19,7 +21,8 @@
     "nodemailer": "^6.9.16",
     "outscraper": "^2.1.8",
     "react": "^19.2.1",
-    "react-dom": "^19.2.1"
+    "react-dom": "^19.2.1",
+    "react-router-dom": "^7.11.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

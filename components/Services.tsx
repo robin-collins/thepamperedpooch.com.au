@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { SERVICES, BUSINESS_INFO } from '../constants';
+import { useConfig } from '../ConfigContext';
 import { Service } from '../types';
 import { ScissorsIcon, WaterIcon, PawIcon, RibbonIcon, PhoneIcon } from './Icons';
+import { smoothScrollTo } from './Navigation';
 
 const getIcon = (type: string, className: string) => {
   switch (type) {
@@ -14,6 +15,7 @@ const getIcon = (type: string, className: string) => {
 };
 
 const Services: React.FC = () => {
+  const { services, businessInfo } = useConfig();
   const [selectedService, setSelectedService] = useState<Service | null>(null);
 
   const openModal = (service: Service) => {
@@ -33,14 +35,14 @@ const Services: React.FC = () => {
           <span className="text-primary font-bold tracking-widest uppercase text-sm mb-2 block">Our Expertise</span>
           <h2 className="text-4xl md:text-5xl font-serif font-bold text-dark mb-6">Comprehensive Pet Care</h2>
           <p className="text-gray-600 text-lg">
-            We cater to all canine and feline breeds with a focus on transparency and quality. 
+            We cater to all canine and feline breeds with a focus on transparency and quality.
             From standard clips to show-quality cuts and specialized skin treatments, your pet is in expert hands.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {SERVICES.map((service, index) => (
-            <div 
+          {services.map((service, index) => (
+            <div
               key={service.id}
               onClick={() => openModal(service)}
               className="group bg-white rounded-3xl p-8 transition-all duration-300 hover:-translate-y-2 shadow-soft-sm hover:shadow-soft-xl border border-neutral-200 flex flex-col cursor-pointer"
@@ -64,7 +66,13 @@ const Services: React.FC = () => {
           <div className="inline-block p-8 bg-neutral rounded-3xl border border-neutral-200">
             <h4 className="font-bold text-dark text-lg mb-2">Special Requirements?</h4>
             <p className="text-gray-600 mb-4">We offer designated rooms for each grooming stage and specific treatments for skin conditions.</p>
-            <a href="#contact" className="text-primary font-bold hover:text-primary-hover transition-colors underline decoration-2 underline-offset-4">Contact us to discuss your pet's needs</a>
+            <a
+              href="#contact"
+              onClick={(e) => { e.preventDefault(); smoothScrollTo('#contact'); }}
+              className="text-primary font-bold hover:text-primary-hover transition-colors underline decoration-2 underline-offset-4"
+            >
+              Contact us to discuss your pet's needs
+            </a>
           </div>
         </div>
       </div>
@@ -72,18 +80,18 @@ const Services: React.FC = () => {
       {/* Service Detail Modal */}
       {selectedService && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <div 
-            className="absolute inset-0 bg-dark/60 backdrop-blur-sm transition-opacity" 
+          <div
+            className="absolute inset-0 bg-dark/60 backdrop-blur-sm transition-opacity"
             onClick={closeModal}
             aria-hidden="true"
           ></div>
-          <div 
+          <div
             className="bg-white rounded-3xl p-8 max-w-lg w-full relative z-10 shadow-glow-secondary animate-fade-in-up flex flex-col max-h-[90vh] overflow-y-auto"
             role="dialog"
             aria-labelledby="modal-title"
           >
-            <button 
-              onClick={closeModal} 
+            <button
+              onClick={closeModal}
               className="absolute top-4 right-4 text-gray-400 hover:text-dark w-10 h-10 flex items-center justify-center rounded-full hover:bg-neutral transition-colors"
               aria-label="Close modal"
             >
@@ -97,11 +105,11 @@ const Services: React.FC = () => {
             </div>
 
             <h3 id="modal-title" className="text-3xl font-serif font-bold text-dark mb-4">{selectedService.title}</h3>
-            
+
             <p className="text-gray-600 mb-6 leading-relaxed">
               {selectedService.fullDescription || selectedService.description}
             </p>
-            
+
             {selectedService.features && (
               <div className="mb-8">
                 <h4 className="font-bold text-dark text-sm uppercase tracking-wider mb-4">What's Included</h4>
@@ -119,27 +127,27 @@ const Services: React.FC = () => {
                 </ul>
               </div>
             )}
-            
+
             {selectedService.pricingDetails && (
               <div className="bg-neutral p-5 rounded-2xl mb-8 border border-neutral-200">
                 <div className="flex items-center gap-2 mb-2">
-                   <div className="w-2 h-2 rounded-full bg-primary"></div>
-                   <h4 className="font-bold text-dark text-sm uppercase tracking-wide">Pricing Details</h4>
+                  <div className="w-2 h-2 rounded-full bg-primary"></div>
+                  <h4 className="font-bold text-dark text-sm uppercase tracking-wide">Pricing Details</h4>
                 </div>
                 <p className="text-sm text-gray-600 leading-relaxed">{selectedService.pricingDetails}</p>
               </div>
             )}
-            
+
             <div className="flex flex-col sm:flex-row gap-4 mt-auto">
-              <a 
-                href={`tel:${BUSINESS_INFO.phone}`} 
+              <a
+                href={`tel:${businessInfo.phone}`}
                 className="flex-1 bg-primary text-white text-center py-3.5 rounded-xl font-bold hover:bg-primary-hover transition-all hover:shadow-glow-primary flex items-center justify-center gap-2 transform active:scale-95"
               >
                 <PhoneIcon className="w-5 h-5" />
                 <span>Book Appointment</span>
               </a>
-              <button 
-                onClick={closeModal} 
+              <button
+                onClick={closeModal}
                 className="flex-1 border-2 border-neutral-200 text-dark py-3.5 rounded-xl font-bold hover:bg-neutral hover:border-neutral-300 transition-colors"
               >
                 Close

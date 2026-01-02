@@ -1,8 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { NAV_ITEMS, BUSINESS_INFO } from '../constants';
+import { Link } from 'react-router-dom';
+import { NAV_ITEMS } from '../constants';
 import { PhoneIcon } from './Icons';
+import { useConfig } from '../ConfigContext';
+
+export const smoothScrollTo = (targetId: string, duration: number = 800) => {
+  const target = document.getElementById(targetId.replace('#', ''));
+  if (!target) return;
+
+  const startPosition = window.pageYOffset;
+  const targetPosition = target.getBoundingClientRect().top + startPosition;
+  const distance = targetPosition - startPosition;
+  let startTime: number | null = null;
+
+  const easeInOutQuad = (t: number, b: number, c: number, d: number) => {
+    t /= d / 2;
+    if (t < 1) return (c / 2) * t * t + b;
+    t--;
+    return (-c / 2) * (t * (t - 2) - 1) + b;
+  };
+
+  const animation = (currentTime: number) => {
+    if (startTime === null) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    const run = easeInOutQuad(timeElapsed, startPosition, distance, duration);
+    window.scrollTo(0, run);
+    if (timeElapsed < duration) requestAnimationFrame(animation);
+  };
+
+  requestAnimationFrame(animation);
+};
 
 const Navigation: React.FC = () => {
+  const { businessInfo } = useConfig();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -23,7 +53,7 @@ const Navigation: React.FC = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-3 group">
+          <Link to="/" className="flex items-center gap-3 group">
             <div className="relative group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
               <svg
    version="1.1"
@@ -6078,7 +6108,7 @@ const Navigation: React.FC = () => {
             }`}>
               The Pampered Pooch
             </span>
-          </a>
+          </Link>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
@@ -6086,13 +6116,19 @@ const Navigation: React.FC = () => {
               <a
                 key={item.label}
                 href={item.href}
-                className="text-gray-600 hover:text-primary font-medium transition-colors text-sm uppercase tracking-wider"
+                onClick={(e) => {
+                  if (item.href.startsWith('#') && window.location.pathname === '/') {
+                    e.preventDefault();
+                    smoothScrollTo(item.href);
+                  }
+                }}
+                className="text-gray-600 hover:text-primary font-medium transition-colors text-sm uppercase tracking-wider cursor-pointer"
               >
                 {item.label}
               </a>
             ))}
             <a 
-              href={`tel:${BUSINESS_INFO.phone}`}
+              href={`tel:${businessInfo.phone}`}
               className="bg-primary text-white px-6 py-3 rounded-full font-medium hover:bg-primary-hover transition-all hover:shadow-glow-primary flex items-center gap-2 transform hover:-translate-y-0.5 active:translate-y-0"
             >
               <PhoneIcon className="w-4 h-4" />
@@ -6123,17 +6159,23 @@ const Navigation: React.FC = () => {
               <a
                 key={item.label}
                 href={item.href}
-                className="text-dark font-medium py-2 border-b border-gray-50 hover:text-primary transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => {
+                  setMobileMenuOpen(false);
+                  if (item.href.startsWith('#') && window.location.pathname === '/') {
+                    e.preventDefault();
+                    smoothScrollTo(item.href);
+                  }
+                }}
+                className="text-dark font-medium py-2 border-b border-gray-50 hover:text-primary transition-colors cursor-pointer"
               >
                 {item.label}
               </a>
             ))}
             <a 
-              href={`tel:${BUSINESS_INFO.phone}`}
+              href={`tel:${businessInfo.phone}`}
               className="bg-primary text-white text-center py-3 rounded-xl font-bold mt-2 shadow-glow-primary"
             >
-              Call to Book: {BUSINESS_INFO.phoneDisplay}
+              Call to Book: {businessInfo.phoneDisplay}
             </a>
           </div>
         </div>

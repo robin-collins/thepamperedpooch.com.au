@@ -5,10 +5,9 @@ export const BUSINESS_INFO: BusinessInfo = {
   postalAddress: "P.O. Box 109, Willunga, SA 5172",
   phone: "0885564155",
   phoneDisplay: "(08) 8556 4155",
-  fax: "(08) 8556 2299",
   hours: [
-    "Mon - Fri: 8:30 AM - 5:00 PM",
-    "Saturday: 9:00 AM - 2:00 PM",
+    "Tuesday - Friday: 8:30 AM - 4:00 PM",
+    "Saturday: 8:30 AM - 3:00 PM",
     "Sunday: Closed"
   ]
 };
@@ -31,10 +30,8 @@ export const SERVICES: Service[] = [
       "Breed-specific standard cuts",
       "Personalized styling consultation",
       "Matting removal and coat restoration",
-      "Sanitary trimming",
-      "Premium cologne finish"
+      "Sanitary trimming"
     ],
-    pricingDetails: "Small breeds from $85 | Medium from $95 | Large from $110. Additional charges may apply for heavily matted coats or difficult behavior.",
     price: "From $85",
     iconType: "scissors"
   },
@@ -46,11 +43,8 @@ export const SERVICES: Service[] = [
     features: [
       "Medicated soothing shampoos",
       "Flea and tick rinses",
-      "Sensitive skin conditioning",
-      "Oatmeal washes for itchy skin",
-      "Veterinary-grade products"
+      "Sensitive skin conditioning"
     ],
-    pricingDetails: "Add-on to grooming services from $10. Standalone treatments available from $55 depending on size and condition.",
     price: "From $55",
     iconType: "water"
   },
@@ -60,14 +54,12 @@ export const SERVICES: Service[] = [
     description: "Dedicated grooming for cats including clipping, bathing, and nail trimming in a calm, stress-free environment.",
     fullDescription: "Cats require a gentle, patient, and specialized approach. Our groomers are experienced in handling cats of all temperaments, providing grooming services in a quiet, secure environment to minimize stress and ensure safety.",
     features: [
-      "Full coat clipping (Lion clips)",
+      "Full coat clipping",
       "Belly shaves and sanitary clips",
       "Thorough comb-outs for shedding",
-      "Safe nail trimming",
-      "Waterless foam options for anxious cats"
+      "Safe nail trimming"
     ],
-    pricingDetails: "Short hair groom from $70 | Long hair groom/clip from $90. Please note we do not provide sedation; extremely aggressive cats may need veterinary grooming.",
-    price: "From $70",
+    price: "$140",
     iconType: "paw"
   },
   {
@@ -82,8 +74,7 @@ export const SERVICES: Service[] = [
       "Ear cleaning and plucking",
       "Anal gland expression (on request)"
     ],
-    pricingDetails: "Small dogs from $65 | Medium from $75 | Large dogs from $85. Double-coated breeds may incur extra deshedding fees.",
-    price: "From $65",
+    price: "From $70",
     iconType: "ribbon"
   }
 ];

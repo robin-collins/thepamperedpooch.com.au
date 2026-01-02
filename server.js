@@ -36,6 +36,10 @@ const CODE_EXPIRY_MS = 15 * 60 * 1000;
 const REVIEWS_CACHE_PATH = path.join(__dirname, 'reviews-cache.json');
 const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
 
+// Configuration File Paths
+const BUSINESS_INFO_PATH = path.join(__dirname, 'BUSINESS_INFO.json');
+const SERVICES_PATH = path.join(__dirname, 'SERVICES.json');
+
 let reviewsCache = {
     data: [],
     lastFetched: 0
@@ -311,6 +315,27 @@ app.get('/api/reviews', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch reviews' });
     }
 });
+
+// API: Get Business Info and Services configuration
+app.get('/api/config', (req, res) => {
+    try {
+        let businessInfo = {};
+        let services = [];
+
+        if (fs.existsSync(BUSINESS_INFO_PATH)) {
+            businessInfo = JSON.parse(fs.readFileSync(BUSINESS_INFO_PATH, 'utf8'));
+        }
+        if (fs.existsSync(SERVICES_PATH)) {
+            services = JSON.parse(fs.readFileSync(SERVICES_PATH, 'utf8'));
+        }
+
+        res.json({ businessInfo, services });
+    } catch (error) {
+        console.error('Failed to load configuration files:', error.message);
+        res.status(500).json({ error: 'Failed to load configuration' });
+    }
+});
+
 
 // Health check
 app.get('/api/health', (req, res) => {

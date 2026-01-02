@@ -1,0 +1,14 @@
+node_modules
+dist
+.git
+.env
+Dockerfile
+.dockerignore
+npm-debug.log
+pnpm-debug.log
+yarn-debug.log
+yarn-error.log
+.DS_Store
+*.md
+reference/
+email-templates/ (redundant if using specific stages, but safe to ignore if copied separately)

@@ -1,8 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { NAV_ITEMS } from '../constants';
 import { PawIcon } from './Icons';
+import { useModal } from './ModalContext';
 
 const Footer: React.FC = () => {
+  const { openModal } = useModal();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -6064,13 +6067,13 @@ const Footer: React.FC = () => {
           
           <nav className="flex flex-wrap justify-center gap-8">
             {NAV_ITEMS.map((item) => (
-              <a 
+              <Link 
                 key={item.label}
-                href={item.href}
+                to={item.href.startsWith('#') ? `/${item.href}` : item.href}
                 className="text-gray-400 hover:text-primary transition-colors text-sm font-medium uppercase tracking-wider"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </nav>
         </div>
@@ -6078,8 +6081,18 @@ const Footer: React.FC = () => {
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
           <p>&copy; {currentYear} The Pampered Pooch. All rights reserved.</p>
           <div className="flex gap-6 mt-4 md:mt-0">
-            <span className="hover:text-gray-300 cursor-pointer transition-colors">Privacy Policy</span>
-            <span className="hover:text-gray-300 cursor-pointer transition-colors">Terms of Service</span>
+            <button 
+              onClick={() => openModal('privacy')} 
+              className="hover:text-gray-300 transition-colors cursor-pointer"
+            >
+              Privacy Policy
+            </button>
+            <button 
+              onClick={() => openModal('terms')} 
+              className="hover:text-gray-300 transition-colors cursor-pointer"
+            >
+              Terms of Service
+            </button>
           </div>
           <p className="mt-4 md:mt-0 text-xs text-gray-600">
             Designed with <span className="text-secondary">❤</span> in Willunga

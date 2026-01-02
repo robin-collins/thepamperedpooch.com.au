@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "title": "Expert Styling",
+        "description": "Standard and show-quality cuts tailored to breed standards. We provide professional styling for both canine and feline clients.",
+        "fullDescription": "Our expert styling service is tailored to your pet's specific breed standards and your personal preferences. Whether you want a practical summer clip or a show-stopping style, our groomers have the expertise to deliver a precision cut that enhances your pet's natural beauty.",
+        "features": [
+            "Breed-specific standard cuts",
+            "Personalized styling consultation",
+            "Matting removal and coat restoration",
+            "Sanitary trimming"
+        ],
+        "price": "From $85",
+        "iconType": "scissors"
+    },
+    {
+        "id": 2,
+        "title": "Therapeutic Treatments",
+        "description": "Specialized care for pets with skin conditions or flea infestations using premium medicinal shampoos to restore health and comfort.",
+        "fullDescription": "Skin conditions can be uncomfortable and painful for pets. We offer a comprehensive range of medicated washes and treatments designed to soothe irritated skin, treat active flea infestations, and improve overall coat health.",
+        "features": [
+            "Medicated soothing shampoos",
+            "Flea and tick rinses",
+            "Sensitive skin conditioning"
+        ],
+        "price": "From $55",
+        "iconType": "water"
+    },
+    {
+        "id": 3,
+        "title": "Feline Grooming",
+        "description": "Dedicated grooming for cats including clipping, bathing, and nail trimming in a calm, stress-free environment.",
+        "fullDescription": "Cats require a gentle, patient, and specialized approach. Our groomers are experienced in handling cats of all temperaments, providing grooming services in a quiet, secure environment to minimize stress and ensure safety.",
+        "features": [
+            "Full coat clipping",
+            "Belly shaves and sanitary clips",
+            "Thorough comb-outs for shedding",
+            "Safe nail trimming"
+        ],
+        "price": "$140",
+        "iconType": "paw"
+    },
+    {
+        "id": 4,
+        "title": "Full Hygiene Care",
+        "description": "Comprehensive care including warm hydro-bath, blow dry, nail trimming, and ear cleaning for total health and hygiene.",
+        "fullDescription": "Essential maintenance for a healthy, happy pet. This service includes everything needed to keep your pet clean, smelling fresh, and comfortable between full haircuts. Perfect for double-coated breeds or active dogs.",
+        "features": [
+            "Warm hydro-bath with massage",
+            "High-velocity blow dry (deshedding)",
+            "Nail clipping and filing",
+            "Ear cleaning and plucking",
+            "Anal gland expression (on request)"
+        ],
+        "price": "From $70",
+        "iconType": "ribbon"
+    }
+]
